@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { DataComponent } from './data/data.component';
 import { PlottingComponent } from './plotting/plotting.component';
 
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
 import { ChartComponent } from './chart.component';
 
 import {MatInputModule} from '@angular/material/input';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 const routes: Routes = [
   {
@@ -30,7 +30,8 @@ const routes: Routes = [
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    NgxChartsModule
   ]
 })
 export class ChartModule { }

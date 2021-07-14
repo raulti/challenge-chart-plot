@@ -8,7 +8,7 @@ import { HeaderComponent } from './theme/header/header.component';
 import { FooterComponent } from './theme/footer/footer.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav'; 
 
 const routes: Routes = [
   {
