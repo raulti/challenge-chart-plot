@@ -8,15 +8,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
 import { ChartComponent } from './chart.component';
 
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
+import { DataService } from './data/data.service';
 
 const routes: Routes = [
   {
     path: '',
-		component: ChartComponent,
+    component: ChartComponent,
   }
 ];
 
@@ -24,8 +25,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DataComponent,
-     PlottingComponent, 
-     ChartComponent
+    PlottingComponent,
+    ChartComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -36,6 +37,9 @@ const routes: Routes = [
     NgxChartsModule,
     MonacoEditorModule.forRoot(),
     FormsModule
+  ],
+  providers: [
+    DataService
   ]
 })
 export class ChartModule { }

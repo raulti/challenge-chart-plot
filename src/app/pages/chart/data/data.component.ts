@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { EventModel, EventStartModel } from '../model/event.model';
+import * as JSON5 from 'json5'
+import { DataService } from './data.service';
+import { ChartModel, LineModel, SerieModel } from '../model/chart.model';
 
 @Component({
   selector: 'app-data',
@@ -7,10 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DataComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'sql' };
-  code: string;
+  json: String;
+  list: String[] = [];
 
-  constructor() {
-    this.code =
+  constructor(private _dataService: DataService) {
+    this.json =
       "{ type: 'start', timestamp: 1519862400000, select: ['min_response_time', 'max_response_time'], group: ['os', 'browser'] }\n\
     { type: 'span', timestamp: 1519862400000, begin: 1519862400000, end: 1519862460000 }\n\
     { type: 'data', timestamp: 1519862400000, os: 'linux', browser: 'chrome', min_response_time: 0.1, max_response_time: 1.3 }\n\
@@ -27,4 +32,52 @@ export class DataComponent implements OnInit {
   ngOnInit() {
   }
 
+  teste() {
+    this.list = this.json.split('\n');
+    this.list.forEach(element => {
+      this.getEventByType(JSON5.parse(element.toString()));
+    });
+  }
+
+  // generateDatasetLabel(seriesID) {
+  //   return seriesID.replace(/_/g, ' ')
+  //     .split(" ")
+  //     .map(a => a[0].toUpperCase() + a.substr(1))
+  //     .join(" ");
+  // }
+
+  getEventByType(event: EventModel) {
+    switch (event.type) {
+      case 'start':
+
+        this.startChart(new EventStartModel(event));
+        break;
+
+
+      case 'span':
+        break;
+
+
+      case 'data':
+        break;
+
+
+      case 'stop':
+        break;
+    }
+  }
+
+  startChart(eventStartModel: EventStartModel) {
+    let serieModel: SerieModel = new SerieModel("0", 0.2);
+    let seriesModel: SerieModel[] = [];
+    seriesModel.push(serieModel);
+
+    let lineModel: LineModel = new LineModel("Test", seriesModel);
+    let linesModel: LineModel[] = [];
+    linesModel.push(lineModel);
+
+    let chartModel = new ChartModel();
+    chartModel.chart = linesModel;
+    this._dataService.addChartData(chartModel);
+  }
 }
