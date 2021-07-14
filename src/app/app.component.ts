@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
           </main>
 
           <!-- footer -->
-          <app-footer></app-footer>
+          <!-- <app-footer></app-footer> -->
         </mat-sidenav-content>
     </mat-sidenav-container>
   `,
