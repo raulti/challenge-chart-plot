@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-chart',
-  template : `
+  template: `
     <app-data></app-data>
-    <app-plotting></app-plotting>
+    <div class="margin-data"></div>
+    <app-plotting id="plotting"></app-plotting>
   `,
-  styles: []
+  styles: ['.margin-data: {margin-bottom: 80px}']
 })
 export class ChartComponent implements OnInit {
 

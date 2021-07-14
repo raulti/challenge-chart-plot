@@ -28,7 +28,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatSidenavModule
+    MatSidenavModule,
   ],
   exports: [RouterModule],
   providers: [],

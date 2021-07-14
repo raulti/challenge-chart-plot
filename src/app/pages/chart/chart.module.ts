@@ -10,6 +10,8 @@ import { ChartComponent } from './chart.component';
 
 import {MatInputModule} from '@angular/material/input';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -31,7 +33,9 @@ const routes: Routes = [
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MonacoEditorModule.forRoot(),
+    FormsModule
   ]
 })
 export class ChartModule { }
