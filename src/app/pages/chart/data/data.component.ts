@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { EventDataModel, EventModel, EventSpantModel, EventStartModel } from '../model/event.model';
+
 import * as JSON5 from 'json5'
+
 import { DataService } from './data.service';
-import { LineModel, SerieModel } from '../model/chart.model';
 import { DataModel } from '../model/data.model';
+import { LineModel, SerieModel } from '../model/chart.model';
+import { EventDataModel, EventModel, EventSpantModel, EventStartModel, EventStopModel } from '../model/event.model';
 
 @Component({
   selector: 'app-data',
@@ -14,6 +16,11 @@ export class DataComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'sql' };
   jsonString: String;
 
+  @Input() set makeChart($event: any) {
+    this.make();
+  }
+
+
   constructor(private _dataService: DataService) {
     this.jsonString = new DataModel().sampleEvents;
   }
@@ -21,8 +28,8 @@ export class DataComponent implements OnInit {
   ngOnInit() {
   }
 
-  makeChart() {
-    const events = this.jsonString.split('\n');
+  make() {
+    const events = this.jsonString.trim().split('\n');
     events.forEach(event => {
       const eventJson = JSON5.parse(event.toString());
       this.processEventByType(eventJson);
@@ -30,75 +37,84 @@ export class DataComponent implements OnInit {
   }
 
   processEventByType(event: EventModel) {
+
+    if (!this.isEventCanBeProcessed(event)) {
+      return;
+    }
+
     switch (event.type) {
       case 'start':
         this.startChart(new EventStartModel(event));
         break;
 
       case 'span':
-        this.setLimitsTimestamp(new EventSpantModel(event));
+        this.setLimitTimestamp(new EventSpantModel(event));
         break;
 
       case 'data':
-        this.addData(new EventDataModel(event));
+        this.addLine(new EventDataModel(event));
         break;
 
       case 'stop':
+        this.stopEvents();
         break;
     }
   }
 
-  startChart(eventStartModel: EventStartModel) {
-    this._dataService.setEventStartModel(eventStartModel);
-    this._dataService.createNewChart();
+  isEventCanBeProcessed(event: EventModel): Boolean {
+    return event.type == 'start' || event.type == 'span' ||
+      (this.isTimestampLimitValid(event.timestamp) && this._dataService.getStarted());
   }
 
-  setLimitsTimestamp(eventSpantModel: EventSpantModel) {
+  isTimestampLimitValid(timestamp: number) {
+    let beginTimestamp = this._dataService.getBeginTimestamp();
+    let endTimestamp = this._dataService.getEndTimestamp();
+    return timestamp >= beginTimestamp && timestamp <= endTimestamp;
+  }
+
+  stopEvents() {
+    this._dataService.setStarted(false);
+  }
+
+  startChart(eventStartModel: EventStartModel) {
+    this._dataService.setStarted(true);
+    this._dataService.setEventStartModel(eventStartModel);
+    this._dataService.createNewChartModel();
+    this._dataService.setStarted(true);
+  }
+
+  setLimitTimestamp(eventSpantModel: EventSpantModel) {
     this._dataService.setLimitTimestamp(eventSpantModel.begin, eventSpantModel.end);
   }
 
-  addData(eventDataModel: EventDataModel) {
+  addLine(eventDataModel: EventDataModel) {
 
     const eventStart = this._dataService.getEventStartModel();
-    // console.log(eventDataModel.eventData[eventStart.select[0].toString()])
-    // console.log(eventDataModel.eventData[eventStart.group[0].toString()])
 
-    let seriesModel: SerieModel[] = [];
     eventStart.select.forEach(select => {
-      const serieModel = new SerieModel(1, eventDataModel.eventData[select.toString()]);
+      let lineName = this.makeLineNameIdentifier(eventStart.group, eventDataModel.eventData, select.toString());
+      let lineModel = this._dataService.getLineByNameIdentifier(lineName);
+      let serieValue = eventDataModel.eventData[select.toString()];
 
+      if (lineModel) {
+        let serieName = lineModel.series.length + 1;
+        const serieModel = new SerieModel(serieName, serieValue);
+        lineModel.series.push(serieModel);
+      } else {
+        const serieModel = new SerieModel(1, serieValue);
+        lineModel = new LineModel(lineName, [serieModel]);
+      }
 
-      let arrayNames: String[] = [];
-      eventStart.group.forEach(group => {
-        arrayNames.push(eventDataModel.eventData[group.toString()]);
-      });
-      arrayNames.push(select.toString());
-      let key = arrayNames.join('_');
-
-
-      
-      let lines: LineModel[] = this._dataService.chart.lines;
-      seriesModel.push(serieModel);
-
-
-
-      let lineModel: LineModel = new LineModel(key, seriesModel);
-      this._dataService.addChartData(lineModel);
+      this._dataService.addChartLine(lineModel);
     });
+  }
 
-
-
-
-
-    //e.log(seriesModel);
-    // let seriesModel: SerieModel[] = [];
-    // const initialValue = new SerieModel(eventStart.select[0], eventDataModel.eventData[eventStart.select[0]]);
-    // seriesModel.push(initialValue);
-
-    // const finishValue = new SerieModel(eventStart.select[1], eventDataModel.min_response_time);
-    // seriesModel.push(finishValue);
-
-    // let lineModel: LineModel = new LineModel(eventDataModel.os + " " + eventDataModel.group, seriesModel);
-    // this._dataService.addChartData(lineModel);
+  makeLineNameIdentifier(arrayGroup: String[], eventData: any, select: String) {
+    let arrayNames: String[] = [];
+    arrayGroup.forEach(group => {
+      arrayNames.push(eventData[group.toString()]);
+    });
+    arrayNames.push(select);
+    return arrayNames.join('_');
   }
 }

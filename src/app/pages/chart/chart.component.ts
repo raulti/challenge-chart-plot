@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { DataService } from './data/data.service';
 import { ChartModel } from './model/chart.model';
 

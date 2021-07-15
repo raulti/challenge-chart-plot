@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { DataComponent } from './data/data.component';
-import { PlottingComponent } from './plotting/plotting.component';
-
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule, Routes } from '@angular/router';
-import { ChartComponent } from './chart.component';
 
-import { MatInputModule } from '@angular/material/input';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 import { DataService } from './data/data.service';
+import { ChartComponent } from './chart.component';
+import { DataComponent } from './data/data.component';
+import { PlottingComponent } from './plotting/plotting.component';
 
 const routes: Routes = [
   {
@@ -20,7 +20,6 @@ const routes: Routes = [
     component: ChartComponent,
   }
 ];
-
 
 @NgModule({
   declarations: [
