@@ -17,12 +17,11 @@ export class PlottingComponent {
   legend: boolean = true;
   showLabels: boolean = true;
   animations: boolean = true;
-  xAxis: boolean = false;
-  yAxis: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = false;
   showYAxisLabel: boolean = true;
-  showXAxisLabel: boolean = false;
+  showXAxisLabel: boolean = true;
   timeline: boolean = true;
-  view: [number, number] = [window.screen.height, 350];
 
   colorScheme = {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
@@ -31,7 +30,4 @@ export class PlottingComponent {
   constructor() {
   }
 
-  onResize(event: any) {
-    this.view = [event.target.innerWidth, 400];
-  }
 }

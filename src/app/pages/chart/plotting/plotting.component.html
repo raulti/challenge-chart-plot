@@ -1,13 +1,13 @@
-<ngx-charts-line-chart
-  (window:resize)="onResize($event)"
-  [scheme]="colorScheme"
-  [legend]="legend"
-  [showXAxisLabel]="showXAxisLabel"
-  [showYAxisLabel]="showYAxisLabel"
-  [xAxis]="xAxis"
-  [yAxis]="yAxis"
-  [timeline]="timeline"
-  [results]="data"
-  legendTitle=""
-  [view]="view">
-</ngx-charts-line-chart>
+<div style="height: 500px">
+    <ngx-charts-line-chart
+      [scheme]="colorScheme"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [timeline]="timeline"
+      [results]="data"
+      legendTitle="">
+    </ngx-charts-line-chart>
+</div>
