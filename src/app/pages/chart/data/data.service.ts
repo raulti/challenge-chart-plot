@@ -1,23 +1,28 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ChartModel } from '../model/chart.model';
+import { ChartModel, LineModel } from '../model/chart.model';
 
 @Injectable()
 export class DataService {
 
-    public chartData!: ChartModel;
+    charts$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+    begin: number = 0;
+    end: number = 0;
 
-    public charts$: BehaviorSubject<ChartModel> = new BehaviorSubject(new ChartModel());
-
-    addChartData(chartModel: ChartModel) {
-        this.charts$.next(chartModel);
+    get charts() {
+        return this.charts$.value;
     }
 
-    getChartData() {
-        return this.chartData;
+    createNewChart() {
+        this.charts$.next(new ChartModel());
     }
 
-    setChartData() {
-        return this.chartData;
+    addChartData(lineModel: LineModel) {
+        this.charts.lines.push(lineModel);
+    }
+
+    setLimitTimestamp(begin: number, end: number) {
+        this.begin = begin;
+        this.end = end;
     }
 }

@@ -9,8 +9,8 @@ export class PlottingComponent {
   data!: any;
 
   @Input() set dataInput(chartModel: ChartModel) {
-    if (chartModel.chart) {
-      this.data = [...chartModel.chart]
+    if (chartModel instanceof ChartModel && chartModel.lines) {
+      this.data = [...chartModel.lines]
     }
   }
 

@@ -41,8 +41,4 @@ export class EventDataModel extends EventModel {
         this.type = event.type;
         this.timestamp = event.timestamp;
     }
-
-    addPropertie(propertieName: String) {
-        return { ...this, propertieName: "" };
-    }
 }

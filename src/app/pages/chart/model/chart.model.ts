@@ -1,5 +1,5 @@
 export class ChartModel {
-    chart!: LineModel[];
+    lines!: LineModel[];
 }
 
 export class LineModel {
