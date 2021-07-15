@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EventDataModel, EventModel, EventSpantModel, EventStartModel } from '../model/event.model';
 import * as JSON5 from 'json5'
 import { DataService } from './data.service';
-import { ChartModel, LineModel, SerieModel } from '../model/chart.model';
+import { LineModel, SerieModel } from '../model/chart.model';
 import { DataModel } from '../model/data.model';
 
 @Component({
@@ -12,29 +12,22 @@ import { DataModel } from '../model/data.model';
 })
 export class DataComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'sql' };
-  json: String;
-  list: String[] = [];
+  jsonString: String;
 
   constructor(private _dataService: DataService) {
-    this.json = new DataModel().sampleEvents;
+    this.jsonString = new DataModel().sampleEvents;
   }
 
   ngOnInit() {
   }
 
-  teste() {
-    this.list = this.json.split('\n');
-    this.list.forEach(element => {
-      this.processEventByType(JSON5.parse(element.toString()));
+  makeChart() {
+    const events = this.jsonString.split('\n');
+    events.forEach(event => {
+      const eventJson = JSON5.parse(event.toString());
+      this.processEventByType(eventJson);
     });
   }
-
-  // makeLabelName(seriesID) {
-  //   return seriesID.replace(/_/g, ' ')
-  //     .split(" ")
-  //     .map(a => a[0].toUpperCase() + a.substr(1))
-  //     .join(" ");
-  // }
 
   processEventByType(event: EventModel) {
     switch (event.type) {
@@ -43,11 +36,11 @@ export class DataComponent implements OnInit {
         break;
 
       case 'span':
-        this.startChart(new EventSpantModel(event));
+        this.setLimitsTimestamp(new EventSpantModel(event));
         break;
 
       case 'data':
-        this.addData(event);
+        this.addData(new EventDataModel(event));
         break;
 
       case 'stop':
@@ -55,8 +48,8 @@ export class DataComponent implements OnInit {
     }
   }
 
-  startChart(seventStartModel: EventStartModel) {
-    //valid start Chart
+  startChart(eventStartModel: EventStartModel) {
+    this._dataService.setEventStartModel(eventStartModel);
     this._dataService.createNewChart();
   }
 
@@ -65,15 +58,47 @@ export class DataComponent implements OnInit {
   }
 
   addData(eventDataModel: EventDataModel) {
-    let serieModel: SerieModel = new SerieModel("Test", 0.2);
+
+    const eventStart = this._dataService.getEventStartModel();
+    // console.log(eventDataModel.eventData[eventStart.select[0].toString()])
+    // console.log(eventDataModel.eventData[eventStart.group[0].toString()])
+
     let seriesModel: SerieModel[] = [];
-    seriesModel.push(serieModel);
+    eventStart.select.forEach(select => {
+      const serieModel = new SerieModel(1, eventDataModel.eventData[select.toString()]);
 
-    let lineModel: LineModel = new LineModel("Test", seriesModel);
-    let linesModel: LineModel[] = [];
-    linesModel.push(lineModel);
 
-    let chartModel = new ChartModel();
-    this._dataService.createNewChart();
+      let arrayNames: String[] = [];
+      eventStart.group.forEach(group => {
+        arrayNames.push(eventDataModel.eventData[group.toString()]);
+      });
+      arrayNames.push(select.toString());
+      let key = arrayNames.join('_');
+
+
+      
+      let lines: LineModel[] = this._dataService.chart.lines;
+      seriesModel.push(serieModel);
+
+
+
+      let lineModel: LineModel = new LineModel(key, seriesModel);
+      this._dataService.addChartData(lineModel);
+    });
+
+
+
+
+
+    //e.log(seriesModel);
+    // let seriesModel: SerieModel[] = [];
+    // const initialValue = new SerieModel(eventStart.select[0], eventDataModel.eventData[eventStart.select[0]]);
+    // seriesModel.push(initialValue);
+
+    // const finishValue = new SerieModel(eventStart.select[1], eventDataModel.min_response_time);
+    // seriesModel.push(finishValue);
+
+    // let lineModel: LineModel = new LineModel(eventDataModel.os + " " + eventDataModel.group, seriesModel);
+    // this._dataService.addChartData(lineModel);
   }
 }

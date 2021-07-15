@@ -12,9 +12,9 @@ export class LineModel {
 }
 
 export class SerieModel {
-    name: String;
+    name: number;
     value: number;
-    constructor(name: String, value: number) {
+    constructor(name: number, value: number) {
         this.name = name;
         this.value = value;
     }

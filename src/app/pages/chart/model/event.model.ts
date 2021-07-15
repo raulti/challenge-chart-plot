@@ -36,9 +36,11 @@ export class EventStopModel extends EventModel {
 }
 
 export class EventDataModel extends EventModel {
+    eventData: any;
     constructor(event: EventModel) {
         super();
         this.type = event.type;
         this.timestamp = event.timestamp;
+        this.eventData = event;
     }
 }

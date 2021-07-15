@@ -16,7 +16,7 @@ export class ChartComponent implements OnInit {
   chart!: ChartModel;
 
   constructor(private _dataService: DataService) {
-    this._dataService.charts$.subscribe(chartData => {
+    this._dataService.chart$.subscribe(chartData => {
       this.chart = chartData;
     });
   }
