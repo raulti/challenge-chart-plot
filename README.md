@@ -11,3 +11,10 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 I used Angular because a have more experience.
 For chart i use any library without critery.
 Thanks for opportunity, i hope we work togheter
+
+
+## TODO - :(
+- More event format validation
+- More unitary tests
+- Errors mensagens for users
+- Loading events

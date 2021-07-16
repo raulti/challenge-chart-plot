@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { DataService } from 'src/app/pages/chart/data/data.service';
+
 
 @Component({
   selector: 'app-footer',
@@ -11,7 +13,9 @@ import { Component, OnInit } from '@angular/core';
               border: 0px;
               margin: 10px 45px;
               background-color: #017eff;
-              color: #ffffff;">
+              color: #ffffff;"
+              (click)="buttonClicked()"
+              >
         GENERATE CHART
       </button>
     </footer>
@@ -20,9 +24,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _dataService: DataService) { }
 
   ngOnInit() {
   }
 
+  buttonClicked() {
+    this._dataService.init$.next(true);
+  }
 }

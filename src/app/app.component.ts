@@ -18,6 +18,7 @@ import { Component } from '@angular/core';
     </mat-sidenav-container>
   `
 })
+
 export class AppComponent {
   title = 'chart';
 }

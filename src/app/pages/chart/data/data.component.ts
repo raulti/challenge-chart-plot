@@ -16,16 +16,16 @@ export class DataComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'sql' };
   jsonString: String;
 
-  @Input() set makeChart($event: any) {
-    this.make();
-  }
-
-
   constructor(private _dataService: DataService) {
     this.jsonString = new DataModel().sampleEvents;
   }
 
   ngOnInit() {
+    this._dataService.init$.subscribe((value) => {
+      if (value === true) {
+        this.make();
+      }
+    });
   }
 
   make() {

@@ -7,6 +7,7 @@ import { ChartModel, LineModel } from '../model/chart.model';
 @Injectable()
 export class DataService {
     chart$: BehaviorSubject<ChartModel> = new BehaviorSubject(new ChartModel());
+    init$: BehaviorSubject<any> = new BehaviorSubject(Boolean);
     begin: number = 0;
     end: number = 0;
     eventStartModel!: EventStartModel;

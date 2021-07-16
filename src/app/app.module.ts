@@ -9,6 +9,7 @@ import { FooterComponent } from './theme/footer/footer.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav'; 
+import { DataService } from './pages/chart/data/data.service';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
     MatSidenavModule,
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

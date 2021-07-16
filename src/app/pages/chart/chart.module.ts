@@ -38,7 +38,7 @@ const routes: Routes = [
     FormsModule
   ],
   providers: [
-    DataService
+    
   ]
 })
 export class ChartModule { }

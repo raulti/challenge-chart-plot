@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DataService } from 'src/app/pages/chart/data/data.service';
 
 import { FooterComponent } from './footer.component';
 
@@ -8,9 +9,10 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterComponent ]
+      declarations: [FooterComponent],
+      providers: [DataService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -21,5 +23,15 @@ describe('FooterComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('verify text button', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('button').innerHTML).toContain("GENERATE CHART");
+  });
+
+  it('verify if button is clicable', () => {
+    const compiled = fixture.nativeElement;
+    expect(compiled.querySelector('button').innerHTML).toBeTruthy();
   });
 });
